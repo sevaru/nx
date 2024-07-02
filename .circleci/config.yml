@@ -86,11 +86,12 @@ jobs:
       NX_E2E_RUN_E2E: 'true'
       NX_CI_EXECUTION_ENV: 'linux'
       NX_CLOUD_DTE_V2: 'true'
+      NX_VERBOSE_LOGGING: 'true'
     steps:
       - checkout
       - nx/set-shas:
           main-branch-name: 'master'
-      - run: npx nx-cloud@next start-ci-run --distributes-on="auto linux-medium" --stop-agents-after="e2e"
+      - run: npx nx-cloud@next start-ci-run --distribute-on="auto linux-medium" --stop-agents-after="e2e"
       - run:
           command: |
             sudo apt-get update
