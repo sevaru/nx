@@ -1,0 +1,12 @@
+diff --git a/src/project-graph/plugins/isolation/plugin-pool.js b/src/project-graph/plugins/isolation/plugin-pool.js
+index 7c04da7df69f093451b37fb756b869f086ef0196..6364cd2ea846ad5b00e50abaee3ec9eeb661b4bf 100644
+--- a/src/project-graph/plugins/isolation/plugin-pool.js
++++ b/src/project-graph/plugins/isolation/plugin-pool.js
+@@ -235,6 +235,7 @@ async function startPluginWorker() {
+         workerPath,
+         ipcPath,
+     ], {
++        // stdio: 'inherit',
+         stdio: process.stdout.isTTY ? 'inherit' : 'ignore',
+         env,
+         detached: true,
