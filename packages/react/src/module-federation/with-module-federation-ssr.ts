@@ -12,6 +12,8 @@ export async function withModuleFederationForSSR(
     return (config) => config;
   }
 
+  options.useNxLibraryControlPlugin ??= true;
+
   const { sharedLibraries, sharedDependencies, mappedRemotes } =
     await getModuleFederationConfig(options, {
       isServer: true,
@@ -42,11 +44,31 @@ export async function withModuleFederationForSSR(
            * Apply user-defined config overrides
            */
           ...(configOverride ? configOverride : {}),
+          runtimePlugins:
+            process.env.NX_MF_DEV_REMOTES && options.useNxLibraryControlPlugin
+              ? [
+                  ...(configOverride?.runtimePlugins ?? []),
+                  require.resolve(
+                    '@nx/webpack/src/utils/module-federation/plugins/runtime-library-control.plugin.js'
+                  ),
+                ]
+              : configOverride?.runtimePlugins,
         },
         {}
       ),
       sharedLibraries.getReplacementPlugin()
     );
+
+    if (process.env.NX_MF_DEV_REMOTES && options.useNxLibraryControlPlugin) {
+      // The env var is only set from the module-federation-dev-server
+      // Attach the runtime plugin
+
+      config.plugins.push(
+        new (require('webpack').DefinePlugin)({
+          'process.env.NX_MF_DEV_REMOTES': process.env.NX_MF_DEV_REMOTES,
+        })
+      );
+    }
 
     return config;
   };
