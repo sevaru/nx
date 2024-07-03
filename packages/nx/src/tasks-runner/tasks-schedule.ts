@@ -200,9 +200,29 @@ export class TasksSchedule {
     );
   }
 
-  private canBeScheduled(taskId: string) {
-    return this.taskGraph.dependencies[taskId].every((id) =>
-      this.completedTasks.has(id)
+  private canBeScheduled(taskId: string): boolean {
+    // if not scheduled tasks, can schedule anything that has no running dependencies
+    const hasDependenciesCompleted = this.taskGraph.dependencies[taskId].every(
+      (id) => this.completedTasks.has(id)
     );
+    if (this.scheduleTasks.length === 0) {
+      return hasDependenciesCompleted;
+    }
+
+    const allScheduledTasksSupportParallelsim = this.scheduledTasks.every(
+      (id) => {
+        return this.taskGraph.tasks[id].parallelism === true;
+      }
+    );
+    if (allScheduledTasksSupportParallelsim) {
+      // if all scheduled tasks support parallelism, tasks that have no dependencies and parallelism true can be scheduled
+      return (
+        this.taskGraph.tasks[taskId].parallelism === true &&
+        hasDependenciesCompleted
+      );
+    } else {
+      // if any scheduled tasks do not support parallelism, no other tasks can be scheduled
+      return false;
+    }
   }
 }
