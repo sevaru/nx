@@ -2075,6 +2075,11 @@
               "name": "add",
               "id": "add",
               "file": "generated/cli/add"
+            },
+            {
+              "name": "import",
+              "id": "import",
+              "file": "generated/cli/import"
             }
           ]
         },
