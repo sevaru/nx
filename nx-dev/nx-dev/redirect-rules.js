@@ -478,7 +478,6 @@ const nxCloudUrls = {
   '/ci': '/ci/intro/ci-with-nx',
   '/concepts/more-concepts/illustrated-dte':
     '/ci/concepts/parallelization-distribution',
-  '/nx-cloud/:path*': '/ci/:path*',
   '/core-features/:path*': '/features/:path*',
   '/ci/recipes/set-up/connect-to-cloud': '/ci/intro/connect-to-cloud',
 };
