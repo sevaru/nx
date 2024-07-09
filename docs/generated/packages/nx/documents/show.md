@@ -155,7 +155,7 @@ Show only projects that match a given pattern.
 
 Type: `string`
 
-Outputs projects with the specified seperator
+Outputs projects with the specified separator
 
 ##### type
 
